@@ -6,6 +6,7 @@
 import { configure } from 'quasar/wrappers';
 import { fileURLToPath } from 'node:url';
 
+// noinspection JSUnusedGlobalSymbols
 export default configure((ctx) => {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -14,7 +15,7 @@ export default configure((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['axios', 'i18n', 'websocket'],
+    boot: ['axios', 'bus', 'i18n', 'websocket'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.scss'],
@@ -59,6 +60,12 @@ export default configure((ctx) => {
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
+      alias: {
+        css: fileURLToPath(new URL('./src/css', import.meta.url)),
+        types: fileURLToPath(new URL('./src/types', import.meta.url)),
+        utils: fileURLToPath(new URL('./src/utils', import.meta.url)),
+      },
+
       vitePlugins: [
         [
           '@intlify/unplugin-vue-i18n/vite',
@@ -72,7 +79,7 @@ export default configure((ctx) => {
 
             ssr: ctx.modeName === 'ssr',
 
-            // you need to set i18n resource including paths !
+            // you need to set i18n resource including paths!
             include: [fileURLToPath(new URL('./src/i18n', import.meta.url))],
           },
         ],
@@ -94,7 +101,7 @@ export default configure((ctx) => {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
-      open: true, // opens browser window automatically
+      open: true, // opens the browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
@@ -104,7 +111,7 @@ export default configure((ctx) => {
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
 
-      // For special cases outside of where the auto-import strategy can have an impact
+      // For special cases outside where the auto-import strategy can have an impact
       // (like functional components as one of the examples),
       // you can manually specify Quasar components/directives to be available everywhere:
       //
@@ -112,7 +119,7 @@ export default configure((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Notify'],
     },
 
     // animations: 'all', // --- includes all animations
@@ -132,32 +139,6 @@ export default configure((ctx) => {
     //   bexManifestFile: 'src-bex/manifest.json
     // },
 
-    // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
-    ssr: {
-      prodPort: 3000, // The default port that the production server should use
-      // (gets superseded if process.env.PORT is specified at runtime)
-
-      middlewares: [
-        'render', // keep this as last one
-      ],
-
-      // extendPackageJson (json) {},
-      // extendSSRWebserverConf (esbuildConf) {},
-
-      // manualStoreSerialization: true,
-      // manualStoreSsrContextInjection: true,
-      // manualStoreHydration: true,
-      // manualPostHydrationTrigger: true,
-
-      pwa: false,
-
-      // pwaOfflineHtmlFilename: 'offline.html', // do NOT use index.html as name!
-      // will mess up SSR
-
-      // pwaExtendGenerateSWOptions (cfg) {},
-      // pwaExtendInjectManifestOptions (cfg) {}
-    },
-
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
       workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
@@ -169,57 +150,6 @@ export default configure((ctx) => {
       // extendPWACustomSWConf (esbuildConf) {},
       // extendGenerateSWOptions (cfg) {},
       // extendInjectManifestOptions (cfg) {}
-    },
-
-    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-cordova-apps/configuring-cordova
-    cordova: {
-      // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
-    },
-
-    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
-    capacitor: {
-      hideSplashscreen: true,
-    },
-
-    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
-    electron: {
-      // extendElectronMainConf (esbuildConf) {},
-      // extendElectronPreloadConf (esbuildConf) {},
-
-      // extendPackageJson (json) {},
-
-      // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
-      preloadScripts: ['electron-preload'],
-
-      // specify the debugging port to use for the Electron app when running in development mode
-      inspectPort: 5858,
-
-      bundler: 'packager', // 'packager' or 'builder'
-
-      packager: {
-        // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-        // OS X / Mac App Store
-        // appBundleId: '',
-        // appCategoryType: '',
-        // osxSign: '',
-        // protocol: 'myapp://path',
-        // Windows only
-        // win32metadata: { ... }
-      },
-
-      builder: {
-        // https://www.electron.build/configuration/configuration
-
-        appId: 'apex-helper',
-      },
-    },
-
-    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
-    bex: {
-      // extendBexScriptsConf (esbuildConf) {},
-      // extendBexManifestJson (json) {},
-
-      contentScripts: ['my-content-script'],
     },
   };
 });

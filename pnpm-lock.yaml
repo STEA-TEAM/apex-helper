@@ -42,6 +42,9 @@ importers:
       '@types/node':
         specifier: ^20.14.2
         version: 20.14.2
+      '@types/obs-studio':
+        specifier: ^2.17.2
+        version: 2.17.2
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.21.0
         version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.3.3))(eslint@8.57.0)(typescript@5.3.3)
@@ -1173,6 +1176,9 @@ packages:
 
   '@types/node@20.14.2':
     resolution: {integrity: sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==}
+
+  '@types/obs-studio@2.17.2':
+    resolution: {integrity: sha512-DH9lSHcXKTtYSOFRIbZLmCTDQwtCZbVrTHpInzGp5y/Yb0lUarjw2d3wEK0zox8oevOHlXMx+ig20l2xVTCZwg==}
 
   '@types/qs@6.9.15':
     resolution: {integrity: sha512-uXHQKES6DQKKCLh441Xv/dwxOq1TVS3JPUMlEqoEglvlhR6Mxnlew/Xq/LRVHpLyk7iK3zODe1qYHIMltO7XGg==}
@@ -4743,6 +4749,8 @@ snapshots:
   '@types/node@20.14.2':
     dependencies:
       undici-types: 5.26.5
+
+  '@types/obs-studio@2.17.2': {}
 
   '@types/qs@6.9.15': {}
 

@@ -11,10 +11,7 @@ class WsWrapper {
         icon: 'check',
       }),
   ];
-  private _handlers = new Map<
-    WsAction,
-    (message: WsMessageMapping[keyof WsMessageMapping]) => void
-  >();
+  private _handlers = new Map<WsAction, (message: never) => void>();
   private _url?: string;
   private _ws: WebSocket | undefined;
 
@@ -45,7 +42,7 @@ class WsWrapper {
       const message = JSON.parse(event.data);
       const handler = this._handlers.get(message.action);
       if (handler) {
-        handler(message);
+        handler(<never>message);
       } else {
         Notify.create({
           type: 'warning',

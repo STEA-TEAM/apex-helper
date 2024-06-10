@@ -1,21 +1,17 @@
+import {
+  LayerDrawServerMessageData,
+  HandshakeServerMessageData,
+  ServerResult,
+} from 'types/WsMessage/types';
+
 export enum WsAction {
   Handshake = 'Handshake',
+  LayerDraw = 'LayerDraw',
 }
 
 export interface WsMessage {
   action: WsAction;
   data: unknown;
-}
-
-export type ServerResult<T = unknown> =
-  | {
-      result: 'failure' | 'error';
-      message: string;
-    }
-  | ({ result: 'success' } & T);
-
-interface HandshakeServerMessageData {
-  resolution: { height: number; width: number };
 }
 
 export class HandshakeServerMessage implements WsMessage {
@@ -27,6 +23,16 @@ export class HandshakeServerMessage implements WsMessage {
   }
 }
 
+export class LayerDrawServerMessage implements WsMessage {
+  action = WsAction.LayerDraw;
+  data: ServerResult<LayerDrawServerMessageData>;
+
+  constructor(data: ServerResult<LayerDrawServerMessageData>) {
+    this.data = data;
+  }
+}
+
 export interface WsMessageMapping {
   [WsAction.Handshake]: HandshakeServerMessage;
+  [WsAction.LayerDraw]: LayerDrawServerMessage;
 }

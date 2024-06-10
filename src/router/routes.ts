@@ -1,13 +1,35 @@
 import { RouteRecordRaw } from 'vue-router';
 
+// noinspection JSUnusedGlobalSymbols
 const routes: RouteRecordRaw[] = [
+  {
+    path: '',
+    redirect: 'dashboard',
+  },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [
+      {
+        path: 'dashboard',
+        components: {
+          default: () => import('pages/DashboardPage.vue'),
+          leftDrawer: () => import('layouts/drawers/LeftMainDrawer.vue'),
+          header: () => import('layouts/headers/MainHeader.vue'),
+        },
+      },
+      {
+        path: 'monitor',
+        components: {
+          default: () => import('pages/MonitorPage.vue'),
+          leftDrawer: () => import('layouts/drawers/LeftMainDrawer.vue'),
+          header: () => import('layouts/headers/MainHeader.vue'),
+        },
+      },
+    ],
   },
 
-  // Always leave this as last one,
+  // Always leave this as the last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
