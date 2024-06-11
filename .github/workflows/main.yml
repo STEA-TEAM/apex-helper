@@ -1,0 +1,34 @@
+name: Apex Helper CI/CD
+
+on:
+  push:
+    branches: [ ci-*, main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-pwa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies and Build
+        run: pnpm i && pnpm run build
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          build_dir: dist/pwa
+          keep_history: false
+          target_branch: gh-pages
