@@ -5,6 +5,10 @@
 
 import { configure } from 'quasar/wrappers';
 import { fileURLToPath } from 'node:url';
+import { readFileSync, writeFileSync } from 'fs';
+import { resolve } from 'path';
+
+process.env.DEPLOY_GITHUB_PAGE = 'true';
 
 // noinspection JSUnusedGlobalSymbols
 export default configure((ctx) => {
@@ -36,6 +40,19 @@ export default configure((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
+      afterBuild(params) {
+        const distDir = params.quasarConf.build?.distDir;
+        if (distDir && process.env.DEPLOY_GITHUB_PAGE) {
+          const indexHtml = readFileSync(
+            resolve(distDir, 'index.html'),
+          ).toString();
+          const newHtml = indexHtml.replace(
+            '<link rel="manifest" href="/manifest.json">',
+            '<link rel="manifest" href="manifest.json">',
+          );
+          writeFileSync(resolve(distDir, 'index.html'), newHtml);
+        }
+      },
       target: {
         browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
         node: 'node20',
@@ -150,13 +167,7 @@ export default configure((ctx) => {
       useCredentialsForManifestTag: false,
       injectPwaMetaTags: true,
       // extendPWACustomSWConf (esbuildConf) {},
-      extendGenerateSWOptions(cfg) {
-        cfg.modifyURLPrefix = process.env.DEPLOY_GITHUB_PAGE
-          ? {
-              '': '/apex-helper/',
-            }
-          : undefined;
-      },
+      // extendGenerateSWOptions(cfg) {},
       // extendInjectManifestOptions (cfg) {}
     },
   };
