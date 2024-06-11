@@ -145,8 +145,8 @@ export default configure((ctx) => {
       // swFilename: 'sw.js',
       // manifestFilename: 'manifest.json'
       // extendManifestJson (json) {},
-      // useCredentialsForManifestTag: true,
-      // injectPwaMetaTags: false,
+      useCredentialsForManifestTag: false,
+      injectPwaMetaTags: true,
       // extendPWACustomSWConf (esbuildConf) {},
       // extendGenerateSWOptions (cfg) {},
       // extendInjectManifestOptions (cfg) {}
