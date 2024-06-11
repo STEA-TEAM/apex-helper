@@ -142,8 +142,8 @@ export default configure((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
       workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      // swFilename: 'sw.js',
-      // manifestFilename: 'manifest.json'
+      swFilename: 'sw.js',
+      manifestFilename: 'manifest.json',
       // extendManifestJson (json) {},
       useCredentialsForManifestTag: false,
       injectPwaMetaTags: true,
