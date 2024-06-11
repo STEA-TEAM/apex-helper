@@ -24,7 +24,7 @@ jobs:
       - name: Install Dependencies and Build
         run: |
           pnpm i
-          DEPLOY_GITHUB_PAGE=true quasar build
+          DEPLOY_GITHUB_PAGE=true pnpm run build
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v4
