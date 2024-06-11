@@ -22,7 +22,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Install Dependencies and Build
-        run: pnpm i && pnpm run build
+        run: |
+          echo "DEPLOY_GITHUB_PAGE=true" >> $GITHUB_ENV
+          pnpm i && pnpm run build
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v4

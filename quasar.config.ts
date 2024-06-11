@@ -57,7 +57,10 @@ export default configure((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf(viteConf) {
+        console.log({ DEPLOY_GITHUB_PAGE: process.env.DEPLOY_GITHUB_PAGE });
+        viteConf.base = process.env.DEPLOY_GITHUB_PAGE ? '/apex-helper/' : '/';
+      },
       // viteVuePluginOptions: {},
 
       alias: {
@@ -142,8 +145,8 @@ export default configure((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
       workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      swFilename: 'apex-helper/sw.js',
-      manifestFilename: 'apex-helper/manifest.json',
+      swFilename: 'sw.js',
+      manifestFilename: 'manifest.json',
       // extendManifestJson (json) {},
       useCredentialsForManifestTag: false,
       injectPwaMetaTags: true,
