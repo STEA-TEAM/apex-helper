@@ -7,6 +7,7 @@ import { configure } from 'quasar/wrappers';
 import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
+import { sync } from 'globby';
 
 process.env.DEPLOY_GITHUB_PAGE = 'true';
 
@@ -51,6 +52,15 @@ export default configure((ctx) => {
             'href="manifest.json"',
           );
           writeFileSync(resolve(distDir, 'index.html'), newHtml);
+
+          const paths = sync([resolve(distDir, '**/*.js').replace(/\\/g, '/')]);
+          paths.forEach((path) => {
+            const content = readFileSync(path).toString();
+            if (content.includes('/sw.js')) {
+              const newContent = content.replace('/sw.js', 'sw.js');
+              writeFileSync(path, newContent);
+            }
+          });
         }
       },
       target: {
