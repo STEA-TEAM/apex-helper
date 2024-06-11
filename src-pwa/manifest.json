@@ -52,6 +52,6 @@
       "description": "Dashboard page"
     }
   ],
-  "start_url": "/",
+  "start_url": "/apex-helper/",
   "theme_color": "#027be3"
 }
