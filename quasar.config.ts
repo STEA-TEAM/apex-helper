@@ -144,24 +144,20 @@ export default configure((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
       workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      swFilename: process.env.DEPLOY_GITHUB_PAGE
-        ? '/apex-helper/sw.js'
-        : 'sw.js',
-      manifestFilename: process.env.DEPLOY_GITHUB_PAGE
-        ? '/apex-helper/manifest.json'
-        : 'manifest.json',
+      // swFilename: 'sw.js',
+      // manifestFilename: 'manifest.json',
       // extendManifestJson (json) {},
       useCredentialsForManifestTag: false,
       injectPwaMetaTags: true,
       // extendPWACustomSWConf (esbuildConf) {},
-      // extendGenerateSWOptions (cfg) {},
+      extendGenerateSWOptions(cfg) {
+        cfg.modifyURLPrefix = process.env.DEPLOY_GITHUB_PAGE
+          ? {
+              '': '/apex-helper/',
+            }
+          : undefined;
+      },
       // extendInjectManifestOptions (cfg) {}
-    },
-
-    sourceFiles: {
-      pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
-      pwaServiceWorker: 'src-pwa/custom-service-worker',
-      pwaManifestFile: 'src-pwa/manifest.json',
     },
   };
 });
