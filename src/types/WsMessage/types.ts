@@ -12,6 +12,6 @@ export interface HandshakeServerMessageData {
 }
 
 export type LayerDrawServerMessageData = {
+  elements: DrawElement[];
   name: string;
-  contents: DrawElement[];
 };

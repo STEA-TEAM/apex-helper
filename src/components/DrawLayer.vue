@@ -15,7 +15,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <svg :width="height ?? screen.height" :height="width ?? screen.width">
+  <svg :height="height ?? screen.height" :width="width ?? screen.width">
     <template v-for="(item, index) in modelValue" :key="index">
       <circle
         v-if="item.type === DrawType.Circle"

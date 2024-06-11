@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 
+import { websocket } from 'boot/websocket';
 import DrawLayer from 'components/DrawLayer.vue';
-import { DrawElement, DrawType } from 'types/WsMessage/DrawElement';
-
-const obsVersion = ref('');
+import { WsAction } from 'types/WsMessage';
+import { DrawElement } from 'types/WsMessage/DrawElement';
 
 declare global {
   // noinspection JSUnusedGlobalSymbols
@@ -15,77 +16,53 @@ declare global {
   }
 }
 
-const drawElements = ref<DrawElement[]>([
-  {
-    type: DrawType.Circle,
-    dimensions: {
-      x: 300,
-      y: 200,
-      radius: 100,
-    },
-    stroke: {
-      color: 'blue',
-      width: 5,
-    },
-  },
-  {
-    type: DrawType.Line,
-    dimensions: {
-      x1: 300,
-      y1: 500,
-      x2: 600,
-      y2: 400,
-    },
-    stroke: {
-      color: 'lime',
-      width: 5,
-    },
-  },
-  {
-    type: DrawType.Rectangle,
-    dimensions: {
-      x: 50,
-      y: 50,
-      width: 100,
-      height: 100,
-    },
-    stroke: {
-      color: 'red',
-      width: 5,
-    },
-  },
-  {
-    type: DrawType.Text,
-    content: 'Hello, World!',
-    dimensions: {
-      x: 100,
-      y: 400,
-    },
-    font: {
-      size: 50,
-    },
-    fill: {
-      color: 'orange',
-    },
-  },
-]);
+const { screen } = useQuasar();
+
+const drawElements = reactive<Record<string, DrawElement[]>>({});
+const obsVersion = ref('');
+const resolution = reactive({ height: screen.height, width: screen.width });
+
+websocket.url = 'ws://localhost:8080';
 
 onMounted(() => {
+  websocket.connect();
   obsVersion.value = window.obsstudio?.pluginVersion ?? 'unknown';
+  websocket.registerWsAction(WsAction.Handshake, ({ data }) => {
+    if (data.result === 'success') {
+      resolution.height = data.resolution.height;
+      resolution.width = data.resolution.width;
+    }
+  });
+  websocket.registerWsAction(WsAction.LayerDraw, ({ data }) => {
+    if (data.result === 'success') {
+      drawElements[data.name] = data.elements;
+    }
+  });
+});
+onBeforeUnmount(() => {
+  websocket.unregisterWsAction(WsAction.Handshake);
+  websocket.unregisterWsAction(WsAction.LayerDraw);
 });
 </script>
 
 <template>
-  <q-page class="row items-center justify-evenly">
-    <draw-layer class="absolute-full" :model-value="drawElements" />
-    <q-card class="bg-transparent col-8 column" bordered flat>
+  <q-page class="flex">
+    <q-card class="bg-transparent" bordered flat>
       <q-card-section class="text-blue" style="white-space: pre">
         <div class="text-h4">OBS version: {{ obsVersion }}</div>
         <div class="text-h4">
-          Window size: {{ $q.screen.width }} x {{ $q.screen.height }}
+          Window size: {{ resolution.width }} x {{ resolution.height }}
         </div>
       </q-card-section>
     </q-card>
+    <draw-layer
+      v-for="(items, name) in drawElements"
+      :key="name"
+      class="absolute-full"
+      :height="resolution.height"
+      :width="resolution.width"
+      :model-value="items"
+    />
   </q-page>
 </template>
 

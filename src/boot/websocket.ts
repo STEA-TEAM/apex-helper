@@ -73,10 +73,14 @@ class WsWrapper {
   }
 
   send(object: WsMessage) {
-    this.sendRaw(JSON.stringify(object));
+    this._sendRaw(JSON.stringify(object));
   }
 
-  private sendRaw(message: string | ArrayBufferLike | Blob | ArrayBufferView) {
+  unregisterWsAction(wsAction: WsAction) {
+    this._handlers.delete(wsAction);
+  }
+
+  private _sendRaw(message: string | ArrayBufferLike | Blob | ArrayBufferView) {
     if (this.isOpen()) {
       this._ws?.send(message);
     } else {
