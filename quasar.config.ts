@@ -47,8 +47,8 @@ export default configure((ctx) => {
             resolve(distDir, 'index.html'),
           ).toString();
           const newHtml = indexHtml.replace(
-            '<link rel="manifest" href="/manifest.json">',
-            '<link rel="manifest" href="manifest.json">',
+            'href="/manifest.json"',
+            'href="manifest.json"',
           );
           writeFileSync(resolve(distDir, 'index.html'), newHtml);
         }
