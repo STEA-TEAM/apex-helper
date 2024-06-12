@@ -61,6 +61,13 @@ export default configure((ctx) => {
           });
         }
       },
+
+      alias: {
+        css: fileURLToPath(new URL('./src/css', import.meta.url)),
+        types: fileURLToPath(new URL('./src/types', import.meta.url)),
+        utils: fileURLToPath(new URL('./src/utils', import.meta.url)),
+      },
+
       target: {
         browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
         node: 'node20',
@@ -86,12 +93,6 @@ export default configure((ctx) => {
         viteConf.base = process.env.DEPLOY_GITHUB_PAGE ? '/apex-helper/' : '/';
       },
       // viteVuePluginOptions: {},
-
-      alias: {
-        css: fileURLToPath(new URL('./src/css', import.meta.url)),
-        types: fileURLToPath(new URL('./src/types', import.meta.url)),
-        utils: fileURLToPath(new URL('./src/utils', import.meta.url)),
-      },
 
       vitePlugins: [
         [
