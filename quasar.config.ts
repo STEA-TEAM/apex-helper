@@ -9,8 +9,6 @@ import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { sync } from 'globby';
 
-process.env.DEPLOY_GITHUB_PAGE = 'true';
-
 // noinspection JSUnusedGlobalSymbols
 export default configure((ctx) => {
   return {
