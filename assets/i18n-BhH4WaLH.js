@@ -1,0 +1,1 @@
+import{b as s}from"./index-DCnRgger.js";import{c as e}from"./vue-i18n.runtime-NFSlq-6s.js";const n={layouts:{drawers:{LeftMainDrawer:{navigations:{dashboard:"Dashboard",monitor:"Monitor"}}}}},t={"en-US":n},c=s(({app:o})=>{const a=e({locale:"en-US",legacy:!1,messages:t});o.use(a)});export{c as default};

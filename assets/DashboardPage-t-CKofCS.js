@@ -1,0 +1,1 @@
+import{Q as e}from"./QPage-BqazhUXs.js";import{_ as a,x as r,y as s}from"./index-DCnRgger.js";const o={};function c(t,n){return r(),s(e,{class:"row items-center justify-evenly"})}const i=a(o,[["render",c],["__file","DashboardPage.vue"]]);export{i as default};
